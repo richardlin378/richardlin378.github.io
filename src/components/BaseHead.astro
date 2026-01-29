@@ -1,0 +1,28 @@
+﻿---
+import { siteConfig } from "@/lib/site";
+
+const { title: siteTitle, description: siteDescription, url } = siteConfig.site;
+const {
+  title = siteTitle,
+  description = siteDescription,
+  image = "/og-image.svg",
+  canonical = url
+} = Astro.props;
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={`${url}${image}`} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={`${url}${image}`} />
+<link rel="alternate" type="application/rss+xml" title={`${siteTitle} RSS`} href={`${url}/rss.xml`} />

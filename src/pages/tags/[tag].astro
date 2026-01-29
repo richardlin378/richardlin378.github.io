@@ -1,0 +1,64 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostCard from "@/components/PostCard.astro";
+import { getCollection } from "astro:content";
+import { sortByDate } from "@/lib/content";
+
+
+export async function getStaticPaths() {
+  const allPosts = (
+    await Promise.all([
+      getCollection("finance"),
+      getCollection("art"),
+      getCollection("music"),
+      getCollection("updates")
+    ])
+  ).flat();
+  const tags = new Set<string>();
+
+  allPosts.flat().forEach((post) => {
+    post.data.tags.forEach((tag) => tags.add(tag));
+  });
+
+  return Array.from(tags).map((tag) => ({
+    params: { tag }
+  }));
+}
+
+const { tag } = Astro.params;
+const allPosts = (
+  await Promise.all([
+    getCollection("finance"),
+    getCollection("art"),
+    getCollection("music"),
+    getCollection("updates")
+  ])
+).flat();
+
+const taggedPosts = sortByDate(
+  allPosts.filter((post) => post.data.tags.includes(tag))
+).map((post) => ({
+  section: post.collection,
+  slug: post.slug,
+  data: post.data
+}));
+
+---
+<BaseLayout title={`Tag: ${tag}`} description={`Posts tagged with ${tag}.`}>
+  <section class="section-title">
+    <h2>Tag: #{tag}</h2>
+    <p>共 {taggedPosts.length} 篇文章</p>
+  </section>
+
+  <section class="listing">
+    {taggedPosts.map((post) => (
+      <PostCard
+        href={`/${post.section}/${post.slug}/`}
+        title={post.data.title}
+        description={post.data.description}
+        date={post.data.date}
+        tags={post.data.tags}
+      />
+    ))}
+  </section>
+</BaseLayout>

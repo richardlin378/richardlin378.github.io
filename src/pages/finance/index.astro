@@ -1,0 +1,28 @@
+﻿---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostCard from "@/components/PostCard.astro";
+import { getCollection } from "astro:content";
+import { sortByDate } from "@/lib/content";
+import { siteConfig } from "@/lib/site";
+
+const posts = sortByDate(await getCollection("finance"));
+const { title } = siteConfig.site;
+---
+<BaseLayout title={`Finance | ${title}`} description="金融時事評論與觀點整理。">
+  <section class="section-title">
+    <h2>Finance</h2>
+    <p>宏觀市場、產業趨勢與投資筆記。</p>
+  </section>
+
+  <section class="listing">
+    {posts.map((post) => (
+      <PostCard
+        href={`/finance/${post.slug}/`}
+        title={post.data.title}
+        description={post.data.description}
+        date={post.data.date}
+        tags={post.data.tags}
+      />
+    ))}
+  </section>
+</BaseLayout>

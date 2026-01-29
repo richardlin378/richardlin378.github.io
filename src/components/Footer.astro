@@ -1,0 +1,11 @@
+﻿---
+import { siteConfig } from "@/lib/site";
+
+const year = new Date().getFullYear();
+const { title } = siteConfig.site;
+---
+<footer class="footer">
+  <div class="container">
+    <p>© {year} {title}. Built with Astro.</p>
+  </div>
+</footer>

@@ -1,0 +1,36 @@
+﻿---
+import { siteConfig } from "@/lib/site";
+
+const { title } = siteConfig.site;
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/finance/", label: "Finance" },
+  { href: "/art/", label: "Art" },
+  { href: "/music/", label: "Music" },
+  { href: "/updates/", label: "Now" },
+  { href: "/about/", label: "About" },
+  {
+    href: "https://richardlin378.github.io/weizhelinart/",
+    label: "Portfolio",
+    external: true
+  }
+];
+---
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="/" aria-label="Home">
+      <strong>{title}</strong>
+    </a>
+    <div class="nav-links">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          target={item.external ? "_blank" : undefined}
+          rel={item.external ? "noopener" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>

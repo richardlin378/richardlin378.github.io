@@ -1,0 +1,21 @@
+﻿---
+import { themes } from "@/styles/themes";
+import { siteConfig } from "@/lib/site";
+
+const active = siteConfig.site.theme;
+---
+<section style="margin-top: 2.5rem;">
+  <div class="section-title">
+    <h2>Style Picker</h2>
+    <p>在 site.config.json 修改 theme 值即可切換</p>
+  </div>
+  <div class="card-grid">
+    {Object.entries(themes).map(([key, theme]) => (
+      <div class="card">
+        <p class="post-meta">{key === active ? "Active" : "Preset"}</p>
+        <h3>{theme.label}</h3>
+        <p>theme: <strong>{key}</strong></p>
+      </div>
+    ))}
+  </div>
+</section>

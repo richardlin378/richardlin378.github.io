@@ -1,0 +1,28 @@
+﻿---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostCard from "@/components/PostCard.astro";
+import { getCollection } from "astro:content";
+import { sortByDate } from "@/lib/content";
+import { siteConfig } from "@/lib/site";
+
+const posts = sortByDate(await getCollection("music"));
+const { title } = siteConfig.site;
+---
+<BaseLayout title={`Music | ${title}`} description="音樂分享、歌單與靈感筆記。">
+  <section class="section-title">
+    <h2>Music</h2>
+    <p>歌單、現場與日常旋律收藏。</p>
+  </section>
+
+  <section class="listing">
+    {posts.map((post) => (
+      <PostCard
+        href={`/music/${post.slug}/`}
+        title={post.data.title}
+        description={post.data.description}
+        date={post.data.date}
+        tags={post.data.tags}
+      />
+    ))}
+  </section>
+</BaseLayout>

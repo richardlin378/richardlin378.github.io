@@ -1,0 +1,15 @@
+﻿---
+import { formatDate } from "@/lib/content";
+
+const { href, title, description, date, tags } = Astro.props;
+---
+<article>
+  <p class="post-meta">{formatDate(date)}</p>
+  <h3><a href={href}>{title}</a></h3>
+  <p>{description}</p>
+  <div class="tag-list">
+    {tags.map((tag) => (
+      <a class="tag" href={`/tags/${tag}/`}>#{tag}</a>
+    ))}
+  </div>
+</article>

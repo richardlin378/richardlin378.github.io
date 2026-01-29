@@ -1,0 +1,25 @@
+﻿---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { formatDate } from "@/lib/content";
+
+const { frontmatter, heading } = Astro.props;
+---
+<BaseLayout title={`${frontmatter.title} | ${heading}`} description={frontmatter.description}>
+  <article class="post-content">
+    <div class="post-meta">
+      <span>{formatDate(frontmatter.date)}</span>
+      <span>·</span>
+      <span>{heading}</span>
+    </div>
+    <h1>{frontmatter.title}</h1>
+    <p>{frontmatter.description}</p>
+    <div class="tag-list">
+      {frontmatter.tags.map((tag) => (
+        <a class="tag" href={`/tags/${tag}/`}>#{tag}</a>
+      ))}
+    </div>
+    <div style="margin-top: 2rem;">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,50 @@
+﻿---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@/lib/site";
+
+const { title, description } = siteConfig.site;
+const portfolioUrl = "https://richardlin378.github.io/weizhelinart/";
+---
+<BaseLayout title={title} description={description}>
+  <section class="hero">
+    <div>
+      <p class="post-meta">Richard Lin / 林煒哲</p>
+      <h1>觀察金融與藝術的節奏，記錄生活的旋律。</h1>
+      <p>
+        我是 Richard Lin（林煒哲），關注金融市場與創作脈動，同時收藏與分享音樂。
+        在這裡整理時事評論、藝術品評析與音樂靈感。
+      </p>
+    </div>
+    <div class="card">
+      <h2>Welcome</h2>
+      <p>
+        這個網站集中展示我的觀點與作品，也可從下方快速進入各分區。
+      </p>
+    </div>
+  </section>
+
+  <section style="margin-top: 3rem;">
+    <div class="section-title">
+      <h2>Explore</h2>
+      <p>Finance · Art · Music · Portfolio</p>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="/finance/">
+        <h3>Finance</h3>
+        <p>宏觀趨勢、產業觀察、投資筆記。</p>
+      </a>
+      <a class="card" href="/art/">
+        <h3>Art</h3>
+        <p>藝術品評析、展覽觀察、創作思考。</p>
+      </a>
+      <a class="card" href="/music/">
+        <h3>Music</h3>
+        <p>歌單與現場分享，音樂靈感備忘。</p>
+      </a>
+      <a class="card" href={portfolioUrl} target="_blank" rel="noopener">
+        <h3>Portfolio</h3>
+        <p>已整合的作品集與藝術專案。</p>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

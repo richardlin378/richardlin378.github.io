@@ -1,0 +1,12 @@
+﻿{
+  "site": {
+    "title": "Richard Lin / 林煒哲",
+    "description": "Finance, art, and music notes by Richard Lin (林煒哲).",
+    "author": "Richard Lin",
+    "email": "hello@example.com",
+    "linkedin": "https://linkedin.com/in/placeholder",
+    "theme": "aurora",
+    "url": "https://richardlin378.github.io",
+    "portfolioPath": "/portfolio/"
+  }
+}

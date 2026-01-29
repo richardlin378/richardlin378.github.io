@@ -1,0 +1,31 @@
+﻿---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import StylePicker from "@/components/StylePicker.astro";
+import { siteConfig } from "@/lib/site";
+
+const { title, description, email, linkedin } = siteConfig.site;
+---
+<BaseLayout title={`About | ${title}`} description={description}>
+  <section class="section-title">
+    <h2>About</h2>
+    <p>關於 Richard Lin</p>
+  </section>
+
+  <div class="post-content">
+    <p>
+      我是 Richard Lin（林煒哲），關注金融市場與藝術文化的交會，也在音樂裡尋找節奏與敘事。
+      這個網站記錄我對宏觀時事的觀察、藝術品的評析，以及音樂分享清單。
+    </p>
+    <p>
+      長期關注的主題包含：市場情緒與產業動能、當代藝術語彙、音樂與生活情緒的連結。
+      我希望以清楚且有溫度的方式，整理自己的研究筆記與作品。
+    </p>
+    <p>
+      歡迎聯絡或交流合作提案：
+      <a href={`mailto:${email}`}>{email}</a> ·
+      <a href={linkedin}>LinkedIn</a>
+    </p>
+  </div>
+
+  <StylePicker />
+</BaseLayout>
