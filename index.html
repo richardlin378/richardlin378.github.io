@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WeiZhe Lin 的個人藝術作品集，展示抽象與優雅風格的電子畫作。">
+  <meta name="keywords" content="WeiZhe Lin, 畫廊, 藝術, 抽象, 畫作展示">
+  <title>WeiZhe Lin Art</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Reset & Base */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow:hidden; }
+    body { font-family:'Inter',sans-serif; background:url('images/background_gallery.png') no-repeat center center fixed; background-size:cover; color:#2d2d2d; position:relative; }
+
+    /* Header */
+    header { position:fixed; top:0; width:100%; background:rgba(255,255,255,0.85); backdrop-filter:blur(12px); z-index:100; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+    .header-inner { max-width:72rem; margin:auto; padding:1.5rem 1rem; display:flex; align-items:center; justify-content:space-between; }
+    .logo { font-family:'Playfair Display',serif; font-size:2.25rem; letter-spacing:0.15em; color:#1a1a1a; }
+    .subtitle { font-size:0.875rem; color:#555; letter-spacing:0.05em; }
+    button { background:none; border:2px solid #1a1a1a; padding:0.25rem 0.75rem; font-size:0.875rem; cursor:pointer; border-radius:0.5rem; transition:background 0.3s; }
+    button:hover { background:rgba(0,0,0,0.05); }
+
+    /* Bio Modal */
+    #bio-modal { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); width:90%; max-width:28rem; background:rgba(255,255,255,0.85); padding:1.5rem; border-radius:1rem; box-shadow:0 10px 30px rgba(0,0,0,0.2); transition:transform 0.3s ease; z-index:300; overflow:auto; }
+    #bio-modal.active { transform:translate(-50%,-50%) scale(1); }
+    #bio-close { position:absolute; top:0.75rem; right:1rem; font-size:1.5rem; cursor:pointer; }
+    #bio-modal h2 { margin-bottom:1rem; text-align:left; }
+    #bio-modal p { text-align:left; line-height:1.6; }
+
+    /* Gallery Container */
+    .gallery-wrapper { position:absolute; top:80px; bottom:80px; left:0; right:0; }
+    #gallery-items { position:absolute; top:0; bottom:0; left:0; right:0; display:flex; align-items:center; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; padding:0 2rem; scroll-behavior:smooth; }
+    #gallery-items::-webkit-scrollbar { height:12px; }
+    #gallery-items::-webkit-scrollbar-track { background:rgba(255,255,255,0.4); border-radius:6px; }
+    #gallery-items::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.7); border-radius:6px; border:2px solid rgba(255,255,255,0.4); }
+
+    /* Gallery Item */
+    .gallery-item { flex:0 0 auto; background:rgba(255,255,255,0.85); padding:0.75rem; border-radius:1rem; box-shadow:0 5px 15px rgba(0,0,0,0.1); transition:transform 0.3s,box-shadow 0.3s,opacity 0.6s; scroll-snap-align:center; text-align:center; opacity:0; transform:translateY(20px); cursor:pointer; margin:0 1rem; }
+    .gallery-item.visible { opacity:1; transform:translateY(0); }
+    .gallery-item:hover { transform:translateY(-8px); box-shadow:0 15px 25px rgba(0,0,0,0.2); }
+    .gallery-item img { border-radius:0.5rem; background:#fff; padding:0.5rem; height:300px; object-fit:contain; }
+    .gallery-item figcaption { margin-top:0.75rem; font-size:1rem; font-weight:600; color:#333; }
+
+    /* Lightbox Modal */
+    .modal { position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index:200; padding:1rem; }
+    .modal.active { display:flex; }
+    .modal-content { display:flex; width:100%; max-width:90vw; max-height:90vh; background:transparent; overflow:hidden; }
+    .modal-img, .modal-text { flex:1 1 50%; }
+    .modal-img img { max-width:100%; max-height:100%; }
+    .modal-text { display:flex; flex-direction:column; justify-content:center; padding:2rem; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,0.5); }
+    .modal-text h2 { margin-bottom:1rem; font-size:2rem; }
+    .modal-text p { margin-bottom:1rem; font-size:1rem; }
+    .modal-close { position:absolute; top:1.25rem; right:1.25rem; font-size:2rem; color:#fff; cursor:pointer; z-index:210; }
+
+    /* Footer */
+    footer { position:absolute; bottom:0; left:0; width:100%; height:80px; text-align:center; padding-top:1rem; background:rgba(255,255,255,0.85); backdrop-filter:blur(5px); font-size:0.875rem; color:#666; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div>
+        <div class="logo">WeiZhe Lin Art</div>
+        <div class="subtitle">Beautiful body perishes, but a work of art dies not.</div>
+      </div>
+      <div>
+        <button id="about-btn">作者簡介</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="bio-modal">
+    <span id="bio-close">&times;</span>
+    <h2>關於作者</h2>
+    <p>林煒哲。畢業於國立政治大學，成長於台灣台北，從小就喜歡有創意的事物。而後在歲月漸長的過程中，因看展而逐漸對繪畫這個創作方式產生興趣，便著手開始自行創作。</p>
+  </div>
+
+  <section class="gallery-wrapper">
+    <div id="gallery-items">
+      <!-- 11 件作品 -->
+      <figure class="gallery-item" data-title="溫柔有時候像一種陷阱" data-description="以粉色為主的筆觸包覆螺旋狀的結構，象徵披上溫柔外衣的陷阱。">
+        <img src="images/gentleness_is_sometimes_like_a_trap.jpg" alt="溫柔有時候像一種陷阱">
+        <figcaption>溫柔有時候像一種陷阱</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="青蘋果" data-description="青蘋果：清甜而帶點微酸。">
+        <img src="images/green_apple.jpg" alt="青蘋果">
+        <figcaption>青蘋果</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="我從裂縫中長出來" data-description="雙股螺旋狀結構從裂縫中生長，象徵生命的韌性與交織。">
+        <img src="images/i_grew_out_of_the_cracks.jpg" alt="我從裂縫中長出來">
+        <figcaption>我從裂縫中長出來</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="我把未說出的話都種進身體裡了" data-description="以紫與黃交織的細胞來呈現未說之話，深藏於皮膚底下。">
+        <img src="images/i_have_planted_all_unspoken_words_into_my_body.jpg" alt="我把未說出的話都種進身體裡了">
+        <figcaption>我把未說出的話都種進身體裡了</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="星空下的孤寂" data-description="以粉黑星空作為背景，再以上下對望的方式，呈現兩者更勝單一的孤獨。">
+        <img src="images/lonely_grassland_night.jpg" alt="星空下的孤寂">
+        <figcaption>星空下的孤寂</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="靈魂的背後是什麼樣子" data-description="模糊的靈魂背後流淌著如鏡之水面，裝載著擁有重量與形狀的寶石。">
+        <img src="images/what_does_the_backside_of_the_soul_look_like.jpg" alt="靈魂的背後是什麼樣子">
+        <figcaption>靈魂的背後是什麼樣子</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="彼岸燈火" data-description="彼岸燈火，如夢似幻。">
+        <img src="images/lights_on_the_other_shore.jpg" alt="彼岸燈火">
+        <figcaption>彼岸燈火</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="日蝕寶寶" data-description="可愛的日蝕寶寶。">
+        <img src="images/eclipse_baby.jpg" alt="日蝕寶寶">
+        <figcaption>日蝕寶寶</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="黃色的機率" data-description="黃色的機率=?">
+        <img src="images/the_probability_of_yellow.jpg" alt="黃色的機率">
+        <figcaption>黃色的機率</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="光長出的羽毛" data-description="具象化的表現由光生長出的羽毛，以不規則的深紫色呈現羽毛的影子。">
+        <img src="images/feathers_grown_from_light.jpg" alt="光長出的羽毛">
+        <figcaption>光長出的羽毛</figcaption>
+      </figure>
+      <figure class="gallery-item" data-title="靈跡" data-description="一艘大船引領著眾多小船航行浪漫的海面上。">
+        <img src="images/traces_of_the_soul.jpg" alt="靈跡">
+        <figcaption>靈跡</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="modal" id="modal">
+    <div class="modal-close" id="modal-close">&times;</div>
+    <div class="modal-content">
+      <div class="modal-img"><img src="" alt="作品預覽"></div>
+      <div class="modal-text"><h2 id="modal-title"></h2><p id="modal-description"></p></div>
+    </div>
+  </div>
+
+  <footer><p>&copy; 2025 WeiZhe Lin. All rights reserved.</p></footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('about-btn').addEventListener('click', () => document.getElementById('bio-modal').classList.toggle('active'));
+      document.getElementById('bio-close').addEventListener('click', () => document.getElementById('bio-modal').classList.remove('active'));
+
+      const items = document.querySelectorAll('.gallery-item');
+      const observer = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold:0.3 });
+      items.forEach(i => observer.observe(i));
+
+      const modal = document.getElementById('modal');
+      items.forEach(item => item.addEventListener('click', () => {
+        document.querySelector('.modal-img img').src = item.querySelector('img').src;
+        document.getElementById('modal-title').textContent = item.dataset.title;
+        document.getElementById('modal-description').textContent = item.dataset.description;
+        modal.classList.add('active');
+      }));
+      document.getElementById('modal-close').addEventListener('click', () => modal.classList.remove('active'));
+    });
+  </script>
+</body>
+</html>
